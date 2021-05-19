@@ -1,6 +1,6 @@
 const {getAllAirReadings, getAllAirReadingsWithPagination, getAllAirReadingsByNode, createAirReading, deleteAirReading, updateAirReading} = require('./controller');
 const {validateField} = require('../airReadings/validations');
-const {isTokenExpired,paginationValidation} = require('../../lib/validation');
+// const {isTokenExpired,paginationValidation} = require('../../lib/validation');
 
 const router = require('express').Router();
                                 
