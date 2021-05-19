@@ -9,6 +9,8 @@ clone the project
 cd project-directory
 yarn install
 yarn dev
+
+npm install --save pg
 ```
 
 ## Usage
