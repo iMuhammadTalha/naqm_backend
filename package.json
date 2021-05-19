@@ -1,14 +1,14 @@
 {
-  "name": "buraak",
+  "name": "naqm",
   "version": "2.0",
-  "description": "Best Ride Hailing Services",
+  "description": "NUST air quality monitoring",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
-    "start": "export NODE_ENV=production && echo 'Node environment set to development' && (pm2 stop 'buraak' || echo 'Nothing to kill') && pm2 start index.js --name 'buraak'"
+    "start": "export NODE_ENV=production && echo 'Node environment set to development' && (pm2 stop 'naqm' || echo 'Nothing to kill') && pm2 start index.js --name 'naqm'"
   },
   "keywords": [
-    "Buraak",
+    "NAQM",
     "ES6"
   ],
   "author": "praemineo",

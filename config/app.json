@@ -7,10 +7,10 @@
     },
     "db": {
       "host": "localhost",
-      "port": 1319,
-      "database": "buraak",
+      "port": 5432,
+      "database": "naqm",
       "username": "postgres",
-      "password": "khurram3340"
+      "password": "MTalha@381"
     }
   },
   "production": {
@@ -21,10 +21,10 @@
     },
     "db": {
       "host": "localhost",
-      "port": 1319,
-      "database": "buraak",
+      "port": 5432,
+      "database": "naqm",
       "username": "postgres",
-      "password": "khurram3340"
+      "password": "MTalha@381"
     }
   }
 }
