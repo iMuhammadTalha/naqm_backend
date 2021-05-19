@@ -1,0 +1,53 @@
+{
+  "name": "buraak",
+  "version": "2.0",
+  "description": "Best Ride Hailing Services",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "export NODE_ENV=production && echo 'Node environment set to development' && (pm2 stop 'buraak' || echo 'Nothing to kill') && pm2 start index.js --name 'buraak'"
+  },
+  "keywords": [
+    "Buraak",
+    "ES6"
+  ],
+  "author": "praemineo",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.748.0",
+    "axios": "^0.19.2",
+    "bcrypt": "^4.0.0",
+    "bcryptjs": "^2.4.3",
+    "bluebird": "^3.5.3",
+    "body-parser": "^1.19.0",
+    "bunyan": "^1.8.1",
+    "bunyan-format": "^0.2.1",
+    "compression": "^1.7.3",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "dtrace-provider": "^0.8.7",
+    "express": "^4.16.4",
+    "helmet": "^3.15.0",
+    "ip": "^1.1.5",
+    "jsonwebtoken": "^8.5.1",
+    "mkdirp": "latest",
+    "moment": "^2.24.0",
+    "multer": "^1.4.2",
+    "multer-s3": "^2.9.0",
+    "node-cron": "^2.0.3",
+    "nodemailer": "^6.4.5",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "pg": "^8.6.0",
+    "response-time": "^2.3.2",
+    "sharp": "^0.25.1",
+    "slugify": "^1.4.5",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.12.1",
+    "nodemon": "^2.0.2"
+  }
+}

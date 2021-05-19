@@ -1,0 +1,18 @@
+
+CREATE TABLE public.admin_profile
+(
+    id bigserial NOT NULL,
+    user_id bigserial NOT NULL,
+    role text NOT NULL,
+    password text NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id)
+        REFERENCES public."users" (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE
+)
+WITH (
+    OIDS = FALSE
+);
+ALTER TABLE public.admin_profile
+    OWNER to postgres;

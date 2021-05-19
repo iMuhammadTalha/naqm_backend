@@ -1,0 +1,20 @@
+CREATE TABLE public."AirReading"
+(
+    id bigserial NOT NULL,
+    created_time timestamp with time zone,
+    ch4 numeric,
+    co numeric,
+    dust numeric,
+    humidity numeric,
+    latitude numeric,
+    longitude numeric,
+    nh3 numeric,
+    no2 numeric,
+    node_id bigint,
+    co2 numeric,
+    temperature numeric,
+    PRIMARY KEY (id)
+);
+
+ALTER TABLE public."AirReading"
+    OWNER to postgres;
