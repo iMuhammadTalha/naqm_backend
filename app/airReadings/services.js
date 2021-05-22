@@ -18,15 +18,78 @@ exports.getAllAirReading = function (result) {
     }
 };
 
+exports.getALatestAirReading = function (nodeID, result) {
+    const sqlQuery = `SELECT * FROM "AirReading" WHERE node_id=${nodeID} ORDER BY created_time DESC`;
+    try {
+        pool.query(sqlQuery, [], (err, res) => {
+            if (err) {
+                logger.error('Error: ', err.stack);
+                result(err, null);
+            } else {
+                result(null, res.rows);
+            }
+        });
+    } catch (error) {
+        logger.error(error);
+    }
+};
+
 exports.getAllAirReadingWithPagination = function (page, pageSize, sortingName, sortingOrder, result) {
-    let sortingQuery = ' ORDER BY AirReadings.type ASC ';
+    let sortingQuery = ' ORDER BY created_time DESC ';
     if (sortingOrder === 'Undefined' || sortingName === 'Undefined' || sortingOrder === 'undefined' || sortingName === 'undefined') {
-        sortingQuery = ' ORDER BY AirReadings.type ASC ';
+        sortingQuery = ' ORDER BY created_time DESC ';
     } else {
         sortingQuery = 'ORDER BY ' + sortingName + ' ' + sortingOrder;
     }
-    const sqlQuery = `SELECT AirReadings.*, services.name AS service_name FROM AirReadings LEFT JOIN services ON services.id=AirReadings.service_id ${sortingQuery} LIMIT ${pageSize} OFFSET ${page * pageSize} `;
-    const sqlCountQuery = `SELECT COUNT(*) as count FROM AirReadings LEFT JOIN services ON services.id=AirReadings.service_id `;
+    const sqlQuery = `SELECT id, ch4, co, dust, humidity, latitude, longitude, nh3, no2, node_id, co2, temperature, to_char(created_time , 'YYYY-MM-DD HH24:MI') AS created_time FROM "AirReading" ${sortingQuery} LIMIT ${pageSize} OFFSET ${page * pageSize} `;
+    const sqlCountQuery = `SELECT COUNT(*) as count FROM "AirReading" `;
+
+    try {
+        pool.getClient((err, client, release) => {
+            if (err) {
+                logger.error('Error: ', err.stack);
+                result(err, null);
+            }
+            client.query(sqlQuery, (err, res) => {
+                if (err) {
+                    logger.error('Error: ', err.stack);
+                    result(err, null);
+                } else {
+                    client.query(sqlCountQuery, (err, countResponse) => {
+                        release();
+                        if (err) {
+                            logger.error('Error: ', err.stack);
+                            result(err, null);
+                        } else {
+                            let pages = Math.floor(countResponse.rows[0].count / pageSize);
+                            if (countResponse.rows[0].count % pageSize > 0) {
+                                pages += 1;
+                            }
+                            const dataToSend = {
+                                totalPages: pages,
+                                totalCount: countResponse.rows[0].count,
+                                records: res.rows
+                            };
+                            result(null, dataToSend);
+                        }
+                    });
+                }
+            });
+        });
+    } catch (error) {
+        logger.error(error);
+    }
+};
+
+exports.getANodeAllAirReadingsWithPagination = function (nodeid, page, pageSize, sortingName, sortingOrder, result) {
+    let sortingQuery = ' ORDER BY created_time DESC ';
+    if (sortingOrder === 'Undefined' || sortingName === 'Undefined' || sortingOrder === 'undefined' || sortingName === 'undefined') {
+        sortingQuery = ' ORDER BY created_time DESC ';
+    } else {
+        sortingQuery = 'ORDER BY ' + sortingName + ' ' + sortingOrder;
+    }
+    const sqlQuery = `SELECT id, ch4, co, dust, humidity, latitude, longitude, nh3, no2, node_id, co2, temperature, to_char(created_time , 'YYYY-MM-DD HH24:MI') AS created_time FROM "AirReading" WHERE node_id= ${nodeid} ${sortingQuery} LIMIT ${pageSize} OFFSET ${page * pageSize} `;
+    const sqlCountQuery = `SELECT COUNT(*) as count FROM "AirReading" WHERE node_id= ${nodeid} `;
 
     try {
         pool.getClient((err, client, release) => {
@@ -66,7 +129,7 @@ exports.getAllAirReadingWithPagination = function (page, pageSize, sortingName, 
 };
 
 exports.getAllAirReadingByNode = function getAllAirReadingByNode(nodeID, result) {
-    const sqlQuery = `SELECT AirReadings.*, services.name AS service_name FROM AirReadings LEFT JOIN services ON services.id=AirReadings.service_id WHERE service_id = '${serviceID}'  ORDER BY AirReadings.type ASC`;
+    const sqlQuery = `SELECT * FROM AirReading WHERE node_id = '${nodeID}'  ORDER BY created_time DESC`;
     try {
         pool.query(sqlQuery, [], (err, res) => {
             if (err) {
@@ -99,7 +162,7 @@ exports.createAirReading = function createAirReading(AirReading, result) {
 
 exports.deleteAirReading = function deleteAirReading(id, result) {
     try {
-        const sqlQuery = `DELETE FROM AirReadings WHERE id='${id}'`;
+        const sqlQuery = `DELETE FROM AirReading WHERE id='${id}'`;
 
         pool.query(sqlQuery, [], (err, res) => {
             if (err) {
@@ -117,7 +180,7 @@ exports.deleteAirReading = function deleteAirReading(id, result) {
 
 exports.updateAirReading = function updateAirReading(id, AirReading, result) {
     try {
-        const sqlQuery = `UPDATE AirReadings SET type='${AirReading.type}', service_id='${AirReading.service_id}', model='${AirReading.model}', color='${AirReading.color}' WHERE id= '${id}'`;
+        const sqlQuery = `UPDATE AirReading SET type='${AirReading.type}', service_id='${AirReading.service_id}', model='${AirReading.model}', color='${AirReading.color}' WHERE id= '${id}'`;
 
         pool.query(sqlQuery, [], (err, res) => {
             if (err) {
@@ -131,3 +194,4 @@ exports.updateAirReading = function updateAirReading(id, AirReading, result) {
         logger.error(error);
     }
 };
+

@@ -1,0 +1,23 @@
+CREATE TYPE user_type AS ENUM ('admin', 'driver', 'app_user', 'fleet');
+
+CREATE TABLE public.users
+(
+    id bigserial NOT NULL,
+    mobile_number text NOT NULL UNIQUE,
+    email text UNIQUE,
+    profile_pic text,
+    created_date timestamp with time zone,
+    user_type user_type NOT NULL,
+    updated_at timestamp with time zone,
+    isDelete bool DEFAULT false,
+    first_name text,
+    last_name text,
+    PRIMARY KEY (id)
+)
+WITH (
+    OIDS = FALSE
+);
+ALTER TABLE public.users
+    OWNER to postgres;
+
+--ALTER TABLE users ALTER COLUMN user_type SET DATA TYPE user_type USING user_type::text::user_type;
