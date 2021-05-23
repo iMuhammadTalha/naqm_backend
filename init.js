@@ -32,7 +32,7 @@ module.exports.init = async function init() {
         app.use(cookieParser());
         app.use(helmet());
         const cors = function (req, res, next) {
-            const whitelist = ['localhost:3000', 'http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002', '111.68.101.14:3000', 'http://13.59.81.136:3000', 'http://13.59.81.136'];
+            const whitelist = ['localhost:3000', 'http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002', '111.68.101.14:3000', 'http://111.68.101.14:3001', 'http://111.68.101.14'];
             // , 'http://13.59.81.136:3000', 'http://13.59.81.136', '13.59.81.136:3000', '13.59.81.136:3355', 'http://3.17.188.155:3000', 'http://3.17.188.155', '3.17.188.155:3000', '3.17.188.155:3355', '54.159.89.13', 'http://54.159.89.13', 'http://54.159.89.13:3000', 'http://54.159.89.13:3355', '54.159.89.13', '54.159.89.13:3000', '54.159.89.13:3355'
             const origin = req.headers.origin;
             const host = req.headers.host;
