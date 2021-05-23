@@ -1,4 +1,4 @@
-const {getAllAirReadings, getAQI, getAllAirReadingsWithPagination, getANodeAllAirReadingsWithPagination, getAllAirReadingsByNode, createAirReading, deleteAirReading, getARecentReading} = require('./controller');
+const {getAllAirReadings, getAQI, getAllAirReadingsWithPagination, getANodeAllAirReadingsWithPagination, getAllAirReadingsByNode, createAirReading, deleteAirReading, getARecentReading, getAQIGraph} = require('./controller');
 const {validateField} = require('../airReadings/validations');
 // const {isTokenExpired,paginationValidation} = require('../../lib/validation');
 
@@ -34,6 +34,10 @@ router.get('/get-AQI/:id', getAQI, function (req, res) {
 
 router.get('/get-a-recent-reading/:id', getARecentReading, function (req, res) {
     res.send(res.locals.aAirReading);
+});
+
+router.get('/get-aqi-graph/:id', getAQIGraph, function (req, res) {
+    res.send(res.locals.AQIGraphData);
 });
 
 module.exports = router;
