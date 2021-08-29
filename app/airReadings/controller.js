@@ -3,7 +3,7 @@ const services = require('./services');
 const config = require('../../config');
 const logger = config.logger.createLogger('AirReadings/controller');
 const tf = require('@tensorflow/tfjs');
-require('@tensorflow/tfjs-node');
+// require('@tensorflow/tfjs-node');
 
 
 exports.getAllAirReadings = function (req, res, next) {
