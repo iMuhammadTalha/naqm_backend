@@ -27,14 +27,14 @@ const initServer = async (config, app) => {
 
         if (config.app.server.socket) {
             //init socket io
-            const socket = require('socket.io');
+            // const socket = require('socket.io');
 
             if (config.app.server.socket.port) {
                 //if port is present then init socket on that port
-                serverObject.io = socket(config.app.server.socket.port);
+                // serverObject.io = socket(config.app.server.socket.port);
             } else {
                 // else use the provieded server to init the socket
-                serverObject.io = socket(serverObject.server);
+                // serverObject.io = socket(serverObject.server);
             }
         }
 
