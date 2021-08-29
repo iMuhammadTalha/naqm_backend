@@ -1,4 +1,4 @@
-const {getAllAirReadings, getAQI, getAllAirReadingsWithPagination, getANodeAllAirReadingsWithPagination, getAllAirReadingsByNode, createAirReading, deleteAirReading, getARecentReading, getAQIGraph} = require('./controller');
+const {getAllAirReadings, getAQI, getAllAirReadingsWithPagination, getANodeAllAirReadingsWithPagination, getAllAirReadingsByNode, createAirReading, deleteAirReading, getARecentReading, getAQIGraph, getAQIGraphML, getAQIGraphML2, getAQIGraphML3} = require('./controller');
 const {validateField} = require('../airReadings/validations');
 // const {isTokenExpired,paginationValidation} = require('../../lib/validation');
 
@@ -40,4 +40,18 @@ router.get('/get-aqi-graph/:id', getAQIGraph, function (req, res) {
     res.send(res.locals.AQIGraphData);
 });
 
+//  Temperature, Humidity, Dust
+router.get('/get-aqi-graph-ml/:id', getAQIGraphML, function (req, res) {
+    res.send(res.locals.AQIGraphData);
+});
+
+// NH3, CO
+router.get('/get-aqi-graph-ml-2/:id', getAQIGraphML2, function (req, res) {
+    res.send(res.locals.AQIGraphData);
+});
+
+// NO2, CH4, CO2
+router.get('/get-aqi-graph-ml-3/:id', getAQIGraphML3, function (req, res) {
+    res.send(res.locals.AQIGraphData);
+});
 module.exports = router;
