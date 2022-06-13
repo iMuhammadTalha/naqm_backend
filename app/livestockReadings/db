@@ -1,0 +1,20 @@
+CREATE TABLE public."AnimalReading"
+(
+    id bigserial NOT NULL,
+    created_time timestamp with time zone,
+    body_temperature numeric,
+    atmospheric_temperature numeric,
+    atmospheric_humidity numeric,
+    beat_per_min numeric,
+    Ax numeric,
+    Ay numeric,
+    Az numeric,
+    Gx numeric,
+    Gy numeric,
+    Gz numeric,
+    animal_id bigint,
+    PRIMARY KEY (id)
+);
+
+ALTER TABLE public."AnimalReading"
+    OWNER to postgres;
