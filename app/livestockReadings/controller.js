@@ -97,3 +97,70 @@ exports.deleteAnimalReading = function (req, res, next) {
     });
 };
 
+exports.getGraph = function (req, res, next) {
+    res.locals.GraphData = {
+        bodyTemperatureAvg: [0],
+        atmosphericTemperatureAvg: [0],
+        atmosphericHumidityAvg: [0],
+        beatPerMinAvg: [0],
+        axAvg: [0],
+        ayAvg: [0],
+        azAvg: [0],
+        gxAvg: [0],
+        gyAvg: [0],
+        gzAvg: [0],
+        dates: []
+    };
+
+    let bodyTemperatureAvg = [];
+    let atmosphericTemperatureAvg = [];
+    let atmosphericHumidityAvg = [];
+    let beatPerMinAvg = [];
+    let axAvg = [];
+    let ayAvg = [];
+    let azAvg = [];
+    let gxAvg = [];
+    let gyAvg = [];
+    let gzAvg = [];
+    let dates = [];
+
+    services.get10lastdates(req.params.id, async function (err, last10dates) {
+        if (err) {
+            logger.error(err);
+            return res.status(400).send({msg: 'Error in get all AirReading'});
+        }
+
+        for(let i=last10dates.length-1; i>=0; i--){
+            let dayAvg=await services.getAvgValuesdatesAsync(req.params.id, i);//, function (err, dayAvg) {
+
+                bodyTemperatureAvg[i]=dayAvg.body_temperature;
+                atmosphericTemperatureAvg[i]=dayAvg.atmospheric_temperature;
+                atmosphericHumidityAvg[i]=dayAvg.atmospheric_humidity;
+                beatPerMinAvg[i]=dayAvg.beat_per_min;
+                axAvg[i]=dayAvg.ax;
+                ayAvg[i]=dayAvg.ay;
+                azAvg[i]=dayAvg.az;
+                gxAvg[i]=dayAvg.gx;
+                gyAvg[i]=dayAvg.gy;
+                gzAvg[i]=dayAvg.gz;
+
+                dates[i]= moment(new Date()).subtract(i, "days").format('YYYY-MM-DD');
+        
+        }
+        
+                res.locals.GraphData.bodyTemperatureAvg = bodyTemperatureAvg;
+                res.locals.GraphData.atmosphericTemperatureAvg = atmosphericTemperatureAvg;
+                res.locals.GraphData.atmosphericHumidityAvg = atmosphericHumidityAvg;
+                res.locals.GraphData.beatPerMinAvg = beatPerMinAvg;
+                res.locals.GraphData.axAvg = axAvg;
+                res.locals.GraphData.ayAvg = ayAvg;
+                res.locals.GraphData.azAvg = azAvg;
+                res.locals.GraphData.gxAvg = gxAvg;
+                res.locals.GraphData.gyAvg = gyAvg;
+                res.locals.GraphData.gzAvg = gzAvg;
+                res.locals.GraphData.dates = dates;
+        
+                next();
+    });
+
+};

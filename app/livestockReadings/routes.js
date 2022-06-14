@@ -1,4 +1,4 @@
-const {getAllAnimalReadings, getAQI, getAllAnimalReadingsWithPagination, getANodeAllAnimalReadingsWithPagination, getAllAnimalReadingsByAnimal, createAnimalReading, deleteAnimalReading} = require('./controller');
+const {getAllAnimalReadings, getAQI, getAllAnimalReadingsWithPagination, getANodeAllAnimalReadingsWithPagination, getAllAnimalReadingsByAnimal, createAnimalReading, deleteAnimalReading, getGraph} = require('./controller');
 const {validateField} = require('../airReadings/validations');
 // const {isTokenExpired,paginationValidation} = require('../../lib/validation');
 
@@ -31,5 +31,9 @@ router.delete('/delete-reading/:id', deleteAnimalReading, function (req, res) {
 // router.get('/get-a-recent-reading/:id', getARecentReading, function (req, res) {
 //     res.send(res.locals.aAnimalReading);
 // });
+
+router.get('/get-graph/:id', getGraph, function (req, res) {
+    res.send(res.locals.GraphData);
+});
 
 module.exports = router;

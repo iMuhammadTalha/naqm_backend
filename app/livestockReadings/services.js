@@ -183,7 +183,7 @@ exports.get10lastdates = function(id, result) {
         const sqlQuery = `SELECT
             DISTINCT created_time::date AS created_time  
             FROM public."AnimalReading" 
-            WHERE created_time > current_date - interval '10' day AND node_id=${id} ORDER BY created_time DESC`;
+            WHERE created_time > current_date - interval '10' day AND animal_id=${id} ORDER BY created_time DESC`;
 
         pool.query(sqlQuery, [], (err, res) => {
             if (err) {
@@ -196,6 +196,25 @@ exports.get10lastdates = function(id, result) {
     } catch (error) {
         logger.error(error);
     }
+};
+
+exports.getAvgValuesdatesAsync = function(id, day) {
+    return new Promise((resolve, reject) => {
+        const sqlQuery = `SELECT ROUND(AVG(body_temperature), 2) as body_temperature, ROUND(AVG(atmospheric_temperature), 2) AS atmospheric_temperature, ROUND(AVG(atmospheric_humidity), 2) AS atmospheric_humidity, ROUND(AVG(beat_per_min), 2) AS beat_per_min, ROUND(AVG(ax), 2) AS ax, ROUND(AVG(ay), 2) AS ay, ROUND(AVG(az), 2) AS az, ROUND(AVG(gx), 2) AS gx, ROUND(AVG(gy), 2) AS gy, ROUND(AVG(gz), 2) AS gz
+                
+            FROM public."AnimalReading" 
+            WHERE created_time::date = current_date - interval '${day}' day AND animal_id= '${id}' `;
+            
+        pool.query(sqlQuery, [], function (err, res) {
+            if(!err) {
+                // logger.error(res.rows);
+                resolve(res.rows[0])
+            } else {
+                logger.error(err)
+                reject(err)
+            }
+        });
+    })
 };
 
 exports.get11lastvalues = function(id, result) {
@@ -219,43 +238,4 @@ exports.get11lastvalues = function(id, result) {
     }
 };
 
-// exports.getAvgValuesdates = function(id, day, result) {
-//     try {
-//         const sqlQuery = `SELECT ROUND(AVG(ch4), 2) as ch4, ROUND(AVG(co), 2) AS co, ROUND(AVG(dust), 2) AS dust, ROUND(AVG(humidity), 2) AS humidity, ROUND(AVG(nh3), 2) AS nh3, ROUND(AVG(no2), 2) AS no2, ROUND(AVG(co2), 2) AS co2, ROUND(AVG(temperature), 2) AS temperature
-            
-//             FROM public."AnimalReading" 
-//             WHERE created_time::date = current_date - interval '${day}' day AND node_id= '${id}' `;
-
-//         pool.query(sqlQuery, [], (err, res) => {
-//             if (err) {
-//                 logger.error('Error: ', err.stack);
-//                 result(err, null);
-//             } else {
-//                 result(null, res.rows);
-//             }
-//         });
-//     } catch (error) {
-//         logger.error(error);
-//     }
-// };
-
-
-// exports.getAvgValuesdatesAsync = function(id, day) {
-//     return new Promise((resolve, reject) => {
-//         const sqlQuery = `SELECT ROUND(AVG(ch4), 2) as ch4, ROUND(AVG(co), 2) AS co, ROUND(AVG(dust), 2) AS dust, ROUND(AVG(humidity), 2) AS humidity, ROUND(AVG(nh3), 2) AS nh3, ROUND(AVG(no2), 2) AS no2, ROUND(AVG(co2), 2) AS co2, ROUND(AVG(temperature), 2) AS temperature
-                
-//             FROM public."AnimalReading" 
-//             WHERE created_time::date = current_date - interval '${day}' day AND node_id= '${id}' `;
-            
-//         pool.query(sqlQuery, [], function (err, res) {
-//             if(!err) {
-//                 // logger.error(res.rows);
-//                 resolve(res.rows[0])
-//             } else {
-//                 logger.error(err)
-//                 reject(err)
-//             }
-//         });
-//     })
-// };
 
