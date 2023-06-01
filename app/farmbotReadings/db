@@ -1,0 +1,14 @@
+CREATE TABLE public."FarmBotReading"
+(
+    id bigserial NOT NULL,
+    created_time timestamp with time zone,
+    nitrogen numeric,
+    phosphorus numeric,
+    potassium numeric,
+    soil_moisture numeric,
+    node_id bigint,
+    PRIMARY KEY (id)
+);
+
+ALTER TABLE public."FarmBotReading"
+    OWNER to postgres;

@@ -111,3 +111,16 @@ npm install --save pg
 - **eslint.rc** - eslint configuration file.
   - constains basic configuration and rules for linting.
   - update this file to add specific rules for your project
+
+To start:
+yarn dev
+
+POST Request to save data
+/air/create-reading
+/livestock/create-reading
+/farmbot/create-reading
+
+GET Request to save data
+/air/create-reading
+/livestock/get-all-readings
+/farmbot/get-all-readings
