@@ -180,11 +180,10 @@ exports.deleteAirReading = function deleteAirReading(id, result) {
 
 exports.get10lastdates = function(id, result) {
     try {
-        const sqlQuery = `SELECT
-            DISTINCT created_time::date AS created_time  
-            FROM public."AirReading" 
-            WHERE created_time > current_date - interval '10' day AND node_id=${id} ORDER BY created_time DESC`;
-
+        const sqlQuery = `SELECT DISTINCT TO_CHAR(created_time::date, 'YYYY-MM-DD') AS created_time
+        FROM public."AirReading"
+    ORDER BY created_time DESC
+            LIMIT 10`;
         pool.query(sqlQuery, [], (err, res) => {
             if (err) {
                 logger.error('Error: ', err.stack);
@@ -240,13 +239,14 @@ exports.getAvgValuesdates = function(id, day, result) {
 };
 
 
-exports.getAvgValuesdatesAsync = function(id, day) {
+exports.getAvgValuesdatesAsync = function(date) {
     return new Promise((resolve, reject) => {
-        const sqlQuery = `SELECT ROUND(AVG(ch4), 2) as ch4, ROUND(AVG(co), 2) AS co, ROUND(AVG(dust), 2) AS dust, ROUND(AVG(humidity), 2) AS humidity, ROUND(AVG(nh3), 2) AS nh3, ROUND(AVG(no2), 2) AS no2, ROUND(AVG(co2), 2) AS co2, ROUND(AVG(temperature), 2) AS temperature
-                
+        const sqlQuery = `
+        SELECT 
+        ROUND(AVG(ch4), 2) as ch4, ROUND(AVG(co), 2) AS co, ROUND(AVG(dust), 2) AS dust, ROUND(AVG(humidity), 2) AS humidity, ROUND(AVG(nh3), 2) AS nh3, ROUND(AVG(no2), 2) AS no2, ROUND(AVG(co2), 2) AS co2, ROUND(AVG(temperature), 2) AS temperature
             FROM public."AirReading" 
-            WHERE created_time::date = current_date - interval '${day}' day AND node_id= '${id}' `;
-            
+            WHERE created_time::date = '${date}'
+ `;
         pool.query(sqlQuery, [], function (err, res) {
             if(!err) {
                 // logger.error(res.rows);

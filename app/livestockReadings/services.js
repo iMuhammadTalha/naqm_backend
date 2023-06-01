@@ -180,11 +180,10 @@ exports.deleteAnimalReading = function deleteAnimalReading(id, result) {
 
 exports.get10lastdates = function(id, result) {
     try {
-        const sqlQuery = `SELECT
-            DISTINCT created_time::date AS created_time  
-            FROM public."AnimalReading" 
-            WHERE created_time > current_date - interval '10' day AND animal_id=${id} ORDER BY created_time DESC`;
-
+        const sqlQuery = `SELECT DISTINCT TO_CHAR(created_time::date, 'YYYY-MM-DD') AS created_time
+        FROM public."AnimalReading"
+    ORDER BY created_time DESC
+            LIMIT 10`;
         pool.query(sqlQuery, [], (err, res) => {
             if (err) {
                 logger.error('Error: ', err.stack);
@@ -198,12 +197,13 @@ exports.get10lastdates = function(id, result) {
     }
 };
 
-exports.getAvgValuesdatesAsync = function(id, day) {
+exports.getAvgValuesdatesAsync = function(date) {
     return new Promise((resolve, reject) => {
-        const sqlQuery = `SELECT ROUND(AVG(body_temperature), 2) as body_temperature, ROUND(AVG(atmospheric_temperature), 2) AS atmospheric_temperature, ROUND(AVG(atmospheric_humidity), 2) AS atmospheric_humidity, ROUND(AVG(beat_per_min), 2) AS beat_per_min, ROUND(AVG(ax), 2) AS ax, ROUND(AVG(ay), 2) AS ay, ROUND(AVG(az), 2) AS az, ROUND(AVG(gx), 2) AS gx, ROUND(AVG(gy), 2) AS gy, ROUND(AVG(gz), 2) AS gz
+        const sqlQuery = `SELECT 
+        ROUND(AVG(body_temperature), 2) as body_temperature, ROUND(AVG(atmospheric_temperature), 2) AS atmospheric_temperature, ROUND(AVG(atmospheric_humidity), 2) AS atmospheric_humidity, ROUND(AVG(beat_per_min), 2) AS beat_per_min, ROUND(AVG(ax), 2) AS ax, ROUND(AVG(ay), 2) AS ay, ROUND(AVG(az), 2) AS az, ROUND(AVG(gx), 2) AS gx, ROUND(AVG(gy), 2) AS gy, ROUND(AVG(gz), 2) AS gz
                 
             FROM public."AnimalReading" 
-            WHERE created_time::date = current_date - interval '${day}' day AND animal_id= '${id}' `;
+            WHERE created_time::date = '${date}' `;
             
         pool.query(sqlQuery, [], function (err, res) {
             if(!err) {

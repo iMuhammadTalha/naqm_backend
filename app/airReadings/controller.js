@@ -219,7 +219,7 @@ exports.getAQIGraph = function (req, res, next) {
         }
 
         for(let i=last10dates.length-1; i>=0; i--){
-            let dayAvg=await services.getAvgValuesdatesAsync(req.params.id, i);//, function (err, dayAvg) {
+            let dayAvg=await services.getAvgValuesdatesAsync(last10dates[i].created_time);//, function (err, dayAvg) {
 
                 nh3Avg[i]=dayAvg.nh3;
                 coAvg[i]=dayAvg.co;
@@ -229,7 +229,7 @@ exports.getAQIGraph = function (req, res, next) {
                 dustAvg[i]=dayAvg.dust;
                 humitidyAvg[i]=dayAvg.humidity;
                 temperatureAvg[i]=dayAvg.temperature;
-                dates[i]= moment(new Date()).subtract(i, "days").format('YYYY-MM-DD');
+                dates[i]= last10dates[i].created_time;
 
 
                 const no2AQI = this.calculateForReading(dayAvg.no2, no2Index);
@@ -392,7 +392,7 @@ exports.getAQIGraphML = function (req, res, next) {
 
                             
                                 // ML Models Predictions
-                                const modelUrlHumidity = 'http://111.68.101.14:3001/assets/model/1kvalues/model_humidity/model.json'
+                                const modelUrlHumidity = 'http://localhost:3001/assets/model/1kvalues/model_humidity/model.json'
                                 // 1 Value prediction
                                 const modelHumidity= await tf.loadLayersModel(modelUrlHumidity);
 
@@ -416,7 +416,7 @@ exports.getAQIGraphML = function (req, res, next) {
                         try{
                             if(i!=0){
                                 // ML Models Predictions
-                                const modelUrlDust = 'http://111.68.101.14:3001/assets/model/1kvalues/model_dust/model.json'
+                                const modelUrlDust = 'http://localhost:3001/assets/model/1kvalues/model_dust/model.json'
                                 // 1 Value prediction
                                 const modelDust= await tf.loadLayersModel(modelUrlDust);
                                 // dayDataDust
@@ -440,7 +440,7 @@ exports.getAQIGraphML = function (req, res, next) {
                         try{
                             if(i!=0){
                                 // ML Models Predictions
-                                const modelUrlTemperature = 'http://111.68.101.14:3001/assets/model/1kvalues/model_temperature/model.json'
+                                const modelUrlTemperature = 'http://localhost:3001/assets/model/1kvalues/model_temperature/model.json'
                                 // 1 Value prediction
                                 const modelTemperature= await tf.loadLayersModel(modelUrlTemperature);
 
@@ -613,7 +613,7 @@ exports.getAQIGraphML2 = function (req, res, next) {
 
                             
                                 // ML Models Predictions
-                                const modelUrlNh3 = 'http://111.68.101.14:3001/assets/model/1kvalues/model_nh3/model.json'
+                                const modelUrlNh3 = 'http://localhost:3001/assets/model/1kvalues/model_nh3/model.json'
                                 // 1 Value prediction
                                 const modelNh3= await tf.loadLayersModel(modelUrlNh3);
 
@@ -637,7 +637,7 @@ exports.getAQIGraphML2 = function (req, res, next) {
                         try{
                             if(i!=0){
                                 // ML Models Predictions
-                                const modelUrlCo = 'http://111.68.101.14:3001/assets/model/1kvalues/model_dust/model.json'
+                                const modelUrlCo = 'http://localhost:3001/assets/model/1kvalues/model_dust/model.json'
                                 // 1 Value prediction
                                 const modelCo= await tf.loadLayersModel(modelUrlCo);
                                 // dayDataDust
@@ -811,7 +811,7 @@ exports.getAQIGraphML3 = function (req, res, next) {
                         try{
                             if(i!=0){
                                 // ML Models Predictions
-                                const modelUrlNo2 = 'http://111.68.101.14:3001/assets/model/1kvalues/model_no2/model.json'
+                                const modelUrlNo2 = 'http://localhost:3001/assets/model/1kvalues/model_no2/model.json'
                                 // 1 Value prediction
                                 const modelNo2= await tf.loadLayersModel(modelUrlNo2);
                                 // dayDataDust
@@ -835,7 +835,7 @@ exports.getAQIGraphML3 = function (req, res, next) {
                         try{
                             if(i!=0){
                                 // ML Models Predictions
-                                const modelUrlCh4 = 'http://111.68.101.14:3001/assets/model/1kvalues/model_ch4/model.json'
+                                const modelUrlCh4 = 'http://localhost:3001/assets/model/1kvalues/model_ch4/model.json'
                                 // 1 Value prediction
                                 const modelCh4= await tf.loadLayersModel(modelUrlCh4);
                                 // dayDataDust
@@ -861,7 +861,7 @@ exports.getAQIGraphML3 = function (req, res, next) {
                         try{
                             if(i!=0){
                                 // ML Models Predictions
-                                const modelUrl = 'http://111.68.101.14:3001/assets/model/1kvalues/model_co2/model.json'
+                                const modelUrl = 'http://localhost:3001/assets/model/1kvalues/model_co2/model.json'
                                 // 1 Value prediction
                                 const model= await tf.loadLayersModel(modelUrl);
 

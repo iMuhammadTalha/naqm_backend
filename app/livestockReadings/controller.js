@@ -131,7 +131,7 @@ exports.getGraph = function (req, res, next) {
         }
 
         for(let i=last10dates.length-1; i>=0; i--){
-            let dayAvg=await services.getAvgValuesdatesAsync(req.params.id, i);//, function (err, dayAvg) {
+            let dayAvg=await services.getAvgValuesdatesAsync(last10dates[i].created_time);//, function (err, dayAvg) {
 
                 bodyTemperatureAvg[i]=dayAvg.body_temperature;
                 atmosphericTemperatureAvg[i]=dayAvg.atmospheric_temperature;
@@ -144,7 +144,7 @@ exports.getGraph = function (req, res, next) {
                 gyAvg[i]=dayAvg.gy;
                 gzAvg[i]=dayAvg.gz;
 
-                dates[i]= moment(new Date()).subtract(i, "days").format('YYYY-MM-DD');
+                dates[i]= last10dates[i].created_time;
         
         }
         

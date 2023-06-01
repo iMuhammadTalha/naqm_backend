@@ -180,10 +180,12 @@ exports.deleteFarmBotReading = function deleteFarmBotReading(id, result) {
 
 exports.get10lastdates = function(id, result) {
     try {
-        const sqlQuery = `SELECT
-            DISTINCT created_time::date AS created_time  
-            FROM public."FarmBotReading" 
-            WHERE created_time > current_date - interval '10' day AND node_id=${id} ORDER BY created_time DESC`;
+        const sqlQuery = `
+        SELECT DISTINCT TO_CHAR(created_time::date, 'YYYY-MM-DD') AS created_time
+        FROM public."FarmBotReading"
+    ORDER BY created_time DESC
+            LIMIT 10
+        `;
 
         pool.query(sqlQuery, [], (err, res) => {
             if (err) {
@@ -198,11 +200,11 @@ exports.get10lastdates = function(id, result) {
     }
 };
 
-exports.getAvgValuesdatesAsync = function(id, day) {
+exports.getAvgValuesdatesAsync = function(date) {
     return new Promise((resolve, reject) => {
         const sqlQuery = `SELECT ROUND(AVG(nitrogen), 2) as nitrogen, ROUND(AVG(phosphorus), 2) AS phosphorus, ROUND(AVG(potassium), 2) AS potassium, ROUND(AVG(soil_moisture), 2) AS soil_moisture
             FROM public."FarmBotReading" 
-            WHERE created_time::date = current_date - interval '${day}' day AND node_id= '${id}' `;
+            WHERE created_time::date = '${date}' `;
             
         pool.query(sqlQuery, [], function (err, res) {
             if(!err) {

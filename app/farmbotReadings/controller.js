@@ -113,14 +113,14 @@ exports.getGraph = function (req, res, next) {
         }
 
         for(let i=last10dates.length-1; i>=0; i--){
-            let dayAvg=await services.getAvgValuesdatesAsync(req.params.id, i);//, function (err, dayAvg) {
+            let dayAvg=await services.getAvgValuesdatesAsync(last10dates[i].created_time);//, function (err, dayAvg) {
 
-            nitrogenAvg[i]=dayAvg.body_temperature;
-            phosphorusAvg[i]=dayAvg.atmospheric_temperature;
-            potassiumAvg[i]=dayAvg.atmospheric_humidity;
-            soilMoistureAvg[i]=dayAvg.beat_per_min;
+            nitrogenAvg[i]=dayAvg.nitrogen;
+            phosphorusAvg[i]=dayAvg.phosphorus;
+            potassiumAvg[i]=dayAvg.potassium;
+            soilMoistureAvg[i]=dayAvg.soil_moisture;
 
-                dates[i]= moment(new Date()).subtract(i, "days").format('YYYY-MM-DD');
+                dates[i]= last10dates[i].created_time;
         
         }
         
