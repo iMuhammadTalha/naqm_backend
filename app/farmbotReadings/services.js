@@ -19,7 +19,7 @@ exports.getAllFarmBotReading = function (result) {
 };
 
 exports.getALatestFarmBotReading = function (nodeID, result) {
-    const sqlQuery = `SELECT * FROM "FarmBotReading" WHERE node_id=${nodeID} ORDER BY created_time DESC`;
+    const sqlQuery = `SELECT * FROM "FarmBotReading" ORDER BY created_time DESC`;
     try {
         pool.query(sqlQuery, [], (err, res) => {
             if (err) {
@@ -88,8 +88,8 @@ exports.getANodeAllFarmBotReadingsWithPagination = function (nodeId, page, pageS
     } else {
         sortingQuery = 'ORDER BY ' + sortingName + ' ' + sortingOrder;
     }
-    const sqlQuery = `SELECT id, nitrogen, phosphorus, potassium, soil_moisture, node_id, to_char(created_time , 'YYYY-MM-DD HH24:MI') AS created_time FROM "FarmBotReading" WHERE node_id= ${nodeId} ${sortingQuery} LIMIT ${pageSize} OFFSET ${page * pageSize} `;
-    const sqlCountQuery = `SELECT COUNT(*) as count FROM "FarmBotReading" WHERE node_id= ${nodeid} `;
+    const sqlQuery = `SELECT id, nitrogen, phosphorus, potassium, soil_moisture, node_id, to_char(created_time , 'YYYY-MM-DD HH24:MI') AS created_time FROM "FarmBotReading" ${sortingQuery} LIMIT ${pageSize} OFFSET ${page * pageSize} `;
+    const sqlCountQuery = `SELECT COUNT(*) as count FROM "FarmBotReading" `;
 
     try {
         pool.getClient((err, client, release) => {
@@ -129,7 +129,7 @@ exports.getANodeAllFarmBotReadingsWithPagination = function (nodeId, page, pageS
 };
 
 exports.getAllFarmBotReadingByFarmBot = function getAllFarmBotReadingByFarmBot(nodeID, result) {
-    const sqlQuery = `SELECT * FROM FarmBotReading WHERE node_id = '${nodeID}'  ORDER BY created_time DESC`;
+    const sqlQuery = `SELECT * FROM FarmBotReading  ORDER BY created_time DESC`;
     try {
         pool.query(sqlQuery, [], (err, res) => {
             if (err) {

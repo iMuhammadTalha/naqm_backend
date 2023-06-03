@@ -19,7 +19,7 @@ exports.getAllAnimalReading = function (result) {
 };
 
 exports.getALatestAnimalReading = function (animalID, result) {
-    const sqlQuery = `SELECT * FROM "AnimalReading" WHERE animal_id=${animalID} ORDER BY created_time DESC`;
+    const sqlQuery = `SELECT * FROM "AnimalReading" ORDER BY created_time DESC`;
     try {
         pool.query(sqlQuery, [], (err, res) => {
             if (err) {
@@ -88,8 +88,8 @@ exports.getANodeAllAnimalReadingsWithPagination = function (animalid, page, page
     } else {
         sortingQuery = 'ORDER BY ' + sortingName + ' ' + sortingOrder;
     }
-    const sqlQuery = `SELECT id, body_temperature, atmospheric_temperature, atmospheric_humidity, beat_per_min, ax, ay, az, gx, gy, gz, animal_id, to_char(created_time , 'YYYY-MM-DD HH24:MI') AS created_time FROM "AnimalReading" WHERE animal_id= ${animalid} ${sortingQuery} LIMIT ${pageSize} OFFSET ${page * pageSize} `;
-    const sqlCountQuery = `SELECT COUNT(*) as count FROM "AnimalReading" WHERE node_id= ${nodeid} `;
+    const sqlQuery = `SELECT id, body_temperature, atmospheric_temperature, atmospheric_humidity, beat_per_min, ax, ay, az, gx, gy, gz, animal_id, to_char(created_time , 'YYYY-MM-DD HH24:MI') AS created_time FROM "AnimalReading" ${sortingQuery} LIMIT ${pageSize} OFFSET ${page * pageSize} `;
+    const sqlCountQuery = `SELECT COUNT(*) as count FROM "AnimalReading" `;
 
     try {
         pool.getClient((err, client, release) => {
@@ -129,7 +129,7 @@ exports.getANodeAllAnimalReadingsWithPagination = function (animalid, page, page
 };
 
 exports.getAllAnimalReadingByAnimal = function getAllAnimalReadingByAnimal(animalID, result) {
-    const sqlQuery = `SELECT * FROM AnimalReading WHERE animal_id = '${animalID}'  ORDER BY created_time DESC`;
+    const sqlQuery = `SELECT * FROM AnimalReading  ORDER BY created_time DESC`;
     try {
         pool.query(sqlQuery, [], (err, res) => {
             if (err) {
