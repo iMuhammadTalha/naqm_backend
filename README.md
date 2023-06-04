@@ -124,3 +124,6 @@ GET Request to save data
 /air/create-reading
 /livestock/get-all-readings
 /farmbot/get-all-readings
+
+Docker commands:
+docker build -t naqm_backend .
