@@ -19,7 +19,7 @@ exports.getAllFarmBotReading = function (result) {
 };
 
 exports.getALatestFarmBotReading = function (nodeID, result) {
-    const sqlQuery = `SELECT * FROM "FarmBotReading" ORDER BY created_time DESC`;
+    const sqlQuery = `SELECT * FROM "FarmBotReading" ORDER BY created_time DESC LIMIT 1`;
     try {
         pool.query(sqlQuery, [], (err, res) => {
             if (err) {

@@ -19,7 +19,7 @@ exports.getAllAnimalReading = function (result) {
 };
 
 exports.getALatestAnimalReading = function (animalID, result) {
-    const sqlQuery = `SELECT * FROM "AnimalReading" ORDER BY created_time DESC`;
+    const sqlQuery = `SELECT * FROM "AnimalReading" ORDER BY created_time DESC LIMIT 1`;
     try {
         pool.query(sqlQuery, [], (err, res) => {
             if (err) {
